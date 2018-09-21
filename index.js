@@ -2,6 +2,10 @@ var express = require('express');
 require('dotenv').config();
 var router = require('./routers/index');
 var app = express();
+//MySQL Database connection
+var mysql = require('./apis/models/mysql');
+mysql.connect();
+
 //Setting view template engin..
 app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
