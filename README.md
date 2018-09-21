@@ -1,5 +1,5 @@
-"#My NodeJS app backup"
+# My NodeJS app backup
 
 # .env file
-#HOST=localhost
-#PORT=3000
+# HOST=localhost
+# PORT=3000
