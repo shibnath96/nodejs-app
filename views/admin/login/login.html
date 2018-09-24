@@ -2,14 +2,104 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="google-signin-client_id" content="779676786167-531iimekdcflp59j6e558rgvbf1a7g3d.apps.googleusercontent.com">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>MyApp | Login</title>
-    <link rel="stylesheet" href="/css/bootstarp.min.css">
+    
+    <link rel="stylesheet" href="/app-assets/common/css/bootstarp.min-4.1.css">
+    <link rel="stylesheet" href="/admin-assets/css/login.css">
 </head>
 <body>
-    <h1>Login Page</h1>
-    <script src="/js/jquery.prod.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
+    <div class="container">
+        <div class="login-container">
+            <div class="card text-center">
+                <div class="card-header">
+                  Please login to continue: <code id="reqSrc"></code>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Login using registered email address</h5>
+                    <form id="login-form">
+                        <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <label for="email"><b>Email</b></label>
+                            </div>
+                            <div class="col-sm-9">
+                                <input class="form-control" type="text" id="email" name="email" placeholder="example@domain.com"
+                                data-validation="email"
+                                >
+                            </div>
+                        </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <label for="email"><b>Password</b></label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="password" id="pass" name="pass" placeholder="Enter your password">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <button class="btn btn-primary" type="submit">Login</button>
+                        </div>
+                    </form>
+                    <div class="social-media-login">
+                        <h5 class="card-title">Or,</h5>
+                        <div style="display: inline-block;">
+                            <!-- Google signin button for Auth2.0 signin functionalties -->
+                            <div id="my-signin2"></div>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="card-footer text-muted">
+                  <a href="/signup">
+                        New user? signup here
+                  </a>
+                </div>
+              </div>
+        </div>
+    </div>
+
+    <script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+    <script src="/app-assets/common/js/jquery.prod.js"></script>
+    <script src="/app-assets/common/js/bootstrap.min-4.1.js"></script>
+    <script src="/app-assets/common/js/jquery-form-validator.js"></script>
+    
+    <script>
+        
+        function renderButton() {
+            gapi.signin2.render('my-signin2', {
+                'scope': 'profile email',
+                'width': 240,
+                'height': 50,
+                'longtitle': true,
+                'theme': 'dark',
+                'onsuccess': onSuccess,
+                'onfailure': onFailure
+            });
+        }
+        function onSuccess(googleUser) {
+            // Useful data for your client-side scripts:
+            var profile = googleUser.getBasicProfile();
+            console.log('googleUser', googleUser);
+            console.log('profile', profile);
+            
+            // The ID token you need to pass to your backend:
+            var id_token = googleUser.getAuthResponse().id_token;
+            console.log("ID Token: " + id_token);
+
+        }
+
+        function onFailure() {
+            console.log('Fail to login to G+');
+        }
+    
+    </script>
+
+    <script src="/admin-assets/js/login.js"></script>
 </body>
 </html>

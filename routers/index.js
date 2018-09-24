@@ -18,7 +18,10 @@ router.get('/test', function( req, res ) {
  *Following APIs will going to render view template as response
 */
 router.get('/login', function(req, res) {
-    res.render('admin/login/login', { src : 'home' });
+    res.render('admin/login/login', { });
+})
+router.get('/signup', function(req, res) {
+    res.render('admin/signup/signup', { });
 })
 
 module.exports = router;
