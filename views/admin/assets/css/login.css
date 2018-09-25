@@ -10,3 +10,14 @@
 
     margin: auto;
 }
+
+em.error.help-block {
+    font-size: 13px;
+    color: red;
+    font-style: normal;
+    font-family: monospace;
+}
+
+#login-form .col-sm-9 {
+    text-align: left;
+}

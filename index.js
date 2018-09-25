@@ -1,14 +1,18 @@
 var express = require('express');
 require('dotenv').config();
+var bodyParser = require('body-parser');
 var cors = require('cors');
 var router = require('./routers/index');
 var app = express();
+
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 //To making all APIs cors origin
 app.use(cors());
 //MySQL Database connection
 var mysql = require('./apis/models/mysql');
-mysql.connect();
+mysql.initConnect();
 
 //Setting up view template engin..
 app.engine('html', require('ejs').renderFile);
@@ -28,7 +32,3 @@ app.get('*', function(req, res) {
 app.listen( process.env.PORT, function() {
     console.log( 'Express server is running on http://localhost:'+process.env.PORT );
 })
-
-module.exports = {
-    mysql: mysql
-}

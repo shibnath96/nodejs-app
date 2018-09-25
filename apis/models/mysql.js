@@ -8,4 +8,12 @@ var connection = mysql.createConnection({
     database : process.env.DATABASE
 })
 
-module.exports = connection;
+module.exports = {
+    initConnect: function() {
+        connection.connect();
+        console.log('MySQL database connected successfully!!');
+    },
+    getConnection: function() {
+        return connection;
+    }
+}
