@@ -10,8 +10,16 @@ var connection = mysql.createConnection({
 
 module.exports = {
     initConnect: function() {
-        connection.connect();
-        console.log('MySQL database connected successfully!!');
+        return new Promise( function( resolve, reject ) {
+            connection.connect( function(err) {
+                if(err){
+                    console.log('DB Connection error');
+                    reject(err);
+                }else {
+                    resolve();
+                }
+            })
+        })
     },
     getConnection: function() {
         return connection;

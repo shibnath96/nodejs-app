@@ -4,12 +4,90 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>MyApp | SignUp</title>
+    <title>SignUp</title>
     <link rel="stylesheet" href="/app-assets/common/css/bootstarp.min-4.1.css">
     <link rel="stylesheet" href="/admin-assets/css/signup.css">
 </head>
 <body>
-    <h1>SignUp</h1>
+    <div class="container-fluid">
+        <div class="signup-container">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h5>SignUp</h5>
+                </div>
+                <div class="card-body">
+                    <div class="signup-form-container">
+                        <form class="signup-form" id="signup-form">
+                            <div class="row form-group">
+                                <div class="col-sm-3">
+                                    <label for="fname">
+                                        <b>First Name</b>
+                                    </label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="text" name="fname" id="fname" placeholder="Enter Your First Name">
+                                    <div class="error-placement"></div>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-sm-3">
+                                    <label for="lname">
+                                        <b>Last Name</b>
+                                    </label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="text" name="lname" id="lname" placeholder="Enter Your Last Name">
+                                    <div class="error-placement"></div>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-sm-3">
+                                    <label for="email">
+                                        <b>Email</b>
+                                    </label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="text" name="email" id="email" placeholder="example@domain.com">
+                                    <div class="error-placement"></div>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-sm-3">
+                                    <label for="mob">
+                                        <b>Mobile</b>
+                                    </label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <input class="form-control" type="text" name="mob" id="mob" placeholder="Enter Your Mobile Number">
+                                    <div class="error-placement"></div>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-sm-3">
+                                    <label for="gen">
+                                        <b>Gender</b>
+                                    </label>
+                                </div>
+                                <div class="col-sm-9 text-left">
+                                    <input type="radio" name="gen" value="m"> Male
+                                    <input type="radio" name="gen" value="f"> Female
+                                    <br>
+                                    <div class="error-placement"></div>
+                                </div>
+                            </div>
+                            <div class="form-group text-center">
+                                <button class="btn btn-primary">SignUp</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a id="login-link">Already Registered ? Login here</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
 
     <script src="/app-assets/common/js/jquery.prod.js"></script>
     <script src="/app-assets/common/js/jquery-form-validator.js"></script>

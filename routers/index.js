@@ -10,14 +10,16 @@ router.get('/test', function( req, res ) {
 })
 
 /* List of middlewares*/
-var loginSubmit = require('../apis/controllers/login-submit');
-var signupSubmit = require('../apis/controllers/signup-submit');
+var loginSubmit = require('../apis/controllers/user/login-submit');
+var signupSubmit = require('../apis/controllers/user/signup-submit');
+var socialLoginManager = require('../apis/controllers/user/social-login');
 
 /** 
  *Following APIs will going to response as JSON data which actually use ./apis directory to executes backend realted tasks.
 */
 router.post('/api/user/login-form-submit', loginSubmit);
 router.post('/api/user/signup-form-submit', signupSubmit);
+router.post('/api/user/social-login-manager', socialLoginManager);
 
 
 /**

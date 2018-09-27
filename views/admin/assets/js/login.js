@@ -72,11 +72,15 @@ $(function(){
                 method: "POST",
                 data: loginData,
                 dataType: "json",
-                beforeSend: function(request) {
+                beforeSend: function( request ) {
                     request.setRequestHeader("Authority", 'authorizationToken key');
                 },
-                success: function(response) {
+                success: function( response ) {
                     console.log(response);
+                },
+                error: function( error ) {
+                    alert('Something went wrong with backend API');
+                    console.log(error);
                 }
             })
         }

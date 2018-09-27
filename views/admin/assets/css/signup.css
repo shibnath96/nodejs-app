@@ -1,0 +1,21 @@
+.signup-container {
+    width: 500px;
+    height: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    margin: auto;
+    text-align: center;
+}
+.card {
+    margin-top: 70px;
+}
+em {
+    font-size: 13px;
+    color: red;
+    font-style: normal;
+    font-family: monospace;
+}
+
+.error-placement {
+    text-align: left;
+}
