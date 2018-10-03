@@ -1,11 +1,14 @@
 $(function() {
 
     var referrer = document.referrer; //Location of page source from where it came from
+    var redirectTo;
 
     if( referrer!== "" ){
-        $("#login-link").attr( 'href', referrer ); 
+        $("#login-link").attr( 'href', referrer );
+        redirectTo = referrer;
     }else {
         $("#login-link").attr( 'href', '/login' );
+        redirectTo = '/login';
     }
 
     /**
@@ -66,17 +69,17 @@ $(function() {
                 mob: $("input[name = 'mob']").val(),
                 gen: $("input[name = 'gen']").val()
             }
+            signupData.redirectTo = redirectTo;
 
             $.ajax({
                 url: '/api/user/signup-form-submit',
                 type: 'POST',
                 data : signupData,
-                dataType: 'json',
+                dataType: '',
                 success: function( res ) {
-                    console.log( res );
-                },
-                error:  function( err ) {
-                    console.log( err );
+                    //document.body = res.responseText;
+                    console.log(res);
+                    
                 }
             })
 

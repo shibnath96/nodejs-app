@@ -34,6 +34,10 @@ mysql.initConnect().then( function(res) {
     
 }).catch( function(err) {
     console.log('Something went error');
+    //Setting up a default page not found(404 error) page
+    app.get('*', function(req, res) {
+        res.render('404-page.html')
+    })
 })
 
 

@@ -26,7 +26,7 @@ router.post('/api/user/social-login-manager', socialLoginManager);
  *Following APIs will going to render view template as response
 */
 router.get('/login', function(req, res) {
-    res.render('admin/login/login', { });
+    res.render('admin/login/login', { error : null });
 })
 router.get('/signup', function(req, res) {
     res.render('admin/signup/signup', { });
