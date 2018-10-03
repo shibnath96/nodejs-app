@@ -70,7 +70,7 @@ $(function() {
                 gen: $("input[name = 'gen']").val()
             }
             signupData.redirectTo = redirectTo;
-
+            console.log(signupData);
             $.ajax({
                 url: '/api/user/signup-form-submit',
                 type: 'POST',
