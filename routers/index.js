@@ -1,12 +1,18 @@
 var express = require('express');
 var router = express.Router();
+var crypto = require('crypto');
+require('dotenv').config();
 
 router.get('/', function(req, res) {
     res.send("It's working...");
 })
 //Creating basic '/test' route
 router.get('/test', function( req, res ) {
-    res.render( 'test/test', {data: 'Testing data'} );
+    //res.render( 'test/test', {data: 'Testing data'} );
+    var key = process.env.ACCOUNT_VERIFICATION_KEY;
+    res.send({
+        status: 'Ok'
+    })
 })
 
 /* List of middlewares*/
@@ -30,6 +36,9 @@ router.get('/login', function(req, res) {
 })
 router.get('/signup', function(req, res) {
     res.render('admin/signup/signup', { });
+})
+router.get('/verify', function(req, res) {
+    res.render('admin/verify/verify', { });
 })
 
 module.exports = router;

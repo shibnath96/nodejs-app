@@ -1,15 +1,19 @@
+require('dotenv').config();
 var model = require('../../models/users');
+var response = require('../../../lib/responses/users/signup');
+var email = require('../../../lib/emails/nodemailer');
 
 module.exports = function(req, res) {
-    var data = req.body;
+    var reqData = req.body;
     if(
-        data.fname === undefined ||
-        data.lname === undefined ||
-        data.email === undefined ||
-        data.mob === undefined ||
-        data.gen === undefined 
+        reqData.fname === undefined ||
+        reqData.lname === undefined ||
+        reqData.email === undefined ||
+        reqData.mob === undefined ||
+        reqData.gen === undefined 
     ){
-        res.send('Invalid input!!');
+        //resObj, statusCode, erroType, msg, data
+        response.fail( res, 200, 'validation', 'Request body contained invalid data', {})
     }else {
         
         var qry = `
@@ -19,7 +23,7 @@ module.exports = function(req, res) {
                 acc_create_date, last_login, 
                 last_login_devices, profile_pic_url
             ) VALUES(
-                "", '${data.fname}', '${data.lname}', '${data.email}', '${data.mob}', '${true}', '${'active'}', '${null}', '${null}',
+                "", '${reqData.fname}', '${reqData.lname}', '${reqData.email}', '${reqData.mob}', '${false}', '${'active'}', '${null}', '${null}',
                 '${new Date()}', '${null}', '${null}', '${null}' 
             );
         `;
@@ -35,31 +39,111 @@ module.exports = function(req, res) {
          *                      Frist Parameter should be a array type if you wish do a projection operation otherwise it should be blanik string if you wish to fetch all columns i.e. selection operation
          *                      Second Parameter must be Table name (String type)
          */
-        model.fetchDbRow( col, 'USERS' ).then( data => {
+        //resObj, statusCode, erroType, msg, data
+        model.fetchDbRow( col, 'USERS' ).then( dbData => {
+            
             var t = 0;
-            data.forEach( row => {
-                if( data.email === row.email && data.mob === row.mobile ) {
-                    //User already exist
-                    t++;
-                }
-            });
-
-            if ( t != 0) {
-                res.send({
-                    meta: {
-                        signup: false,
-                        status: 200
-                    },
-                    data: {
-                        msg: 'Email or Mobile number already exist!. Please try with another.'
+            var rows = dbData.data;
+            
+            if ( !dbData.error ){
+                for (let i = 0; i < rows.length; i++) {
+                    if( rows[i].email === reqData.email ) {
+                        t++;
+                        response.fail( res, 200, 'userExist', 'User already exist!. Email or mobile  already exist in database!.', {});
+                        break;
                     }
-                })
-            }else if( t == 0){
-                res.send('Data about to saved!')
+                }
+
+                if( t === 0) {
+                    //User doesn't exist, Now we can insert the user data....
+                    model.addNewUser( qry ).then( info => {
+                        if( !info.error && info.dataInsert ) {
+                            //When user inserted successfully
+
+                            //Sending email to new user
+                            var veryLink = `http://${ process.env.LOCAL_HOST }:${ process.env.PORT }/verify?account=${reqData.email}&session=abcdef&continue=${reqData.redirectTo}`;
+                            var emailSubject = 'Welcome to NodeJsApp - Account created successfully!';
+                            var emailBody = `
+                                <div>
+                                    <p>
+                                        Hi <b> ${ reqData.fname },</b>
+                                    </p>
+                                    <p>
+                                        Thank you for get registered with us. Your email(${reqData.email}) and other information have been saved to our record. To know details visit our 
+                                        <a href="https://nodejs.org" target="_blank">website</a>.
+                                    </p>
+                                    <p>
+                                        To get first time signin to your app, you need verify your accout first. We'd recomend you to click the link below to verofy your accout. <br>
+                                        <a href="${ veryLink }" target="_blank">Verify Now</a>
+                                    </p>
+                                    <p>
+                                        <b>Note: </b> Unless you verify your account, you won't be able to access your account.
+                                    </p>
+                                    <p>
+                                        Regards,
+                                        <p>
+                                            <b>NodeJsApp developer team</b>
+                                        </p>    
+                                    </p>
+                                </div>
+                            `;
+                            
+                            email.send( reqData.email, emailSubject, emailBody).then( emailStatus => {
+                                if( emailStatus.success ) {
+                                    response.success( res, 200, null, 'Email & Mobile number saved to database successfully!', {
+                                        info: {
+                                            name: `${ reqData.fname } ${ reqData.lname }`,
+                                            email: reqData.email,
+                                            mobile: reqData.mob,
+                                            veryLink: true
+                                        }
+                                    });
+                                } else {
+                                    response.success( res, 200, null, 'Email & Mobile number saved to database successfully!', {
+                                        info: {
+                                            name: `${ reqData.fname } ${ reqData.lname }`,
+                                            email: reqData.email,
+                                            mobile: reqData.mob,
+                                            veryLink: false
+                                        }
+                                    });
+                                }
+                            }).catch( emailErr => {
+                                if( !emailErr.success ) {
+                                    response.success( res, 200, null, 'Email & Mobile number saved to database successfully!', {
+                                        info: {
+                                            name: `${ reqData.fname } ${ reqData.lname }`,
+                                            email: reqData.email,
+                                            mobile: reqData.mob,
+                                            veryLink: false
+                                        }
+                                    });
+                                }
+                            }) 
+
+                        }else {
+                            response.fail( res, 200, 'userExist', 'User already exist!. Email or mobile  already exist in database!.', {});
+                        }
+                    }).catch( err => {
+                        response.fail( res, 200, 'userExist', 'User already exist!. Email or mobile  already exist in database!.', 
+                            {
+                                err: err
+                            }
+                        );
+                    })
+                    
+                }
+
+            }else {
+                response.fail( res, 500, 'db', 'Getting error while inserting data to database', {});
             }
 
         }).catch( err => {
-            res.send( err );
+            response.fail( res, 500, 'db', 'Getting error while inserting data to database',
+                {
+                    err: err
+                }
+            );
         })
 
         

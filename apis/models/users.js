@@ -1,6 +1,8 @@
 var mysql = require('./mysql');
 var dbCon = mysql.getConnection();
 
+'use strict'
+
 module.exports = {
 
     fetchDbRow: function( projection, table ) {
@@ -22,14 +24,36 @@ module.exports = {
                         error: false,
                         data: rows
                     })
-                }
-                    
+                }   
             })
         });
 
     },
-    addNewUser: function() {
+    insertRow: function( columns, table ) {
+        var qry = `
+            INSERT INTO ${ table } VALUES(  )
+        `
+    },
+    addNewUser: function( qry ) {
+        return new Promise( function(resolve, reject) {
+            dbCon.query( qry, ( err, data ) => {
+                if( err ) {
+                    reject({
+                        error: true,
+                        details: err,
+                        dataInsert: true
+                    })
+                } else {
+                    resolve({
+                        error: false,
+                        dataInsert: true,
+                        data: data
+                    })
+                }
+            })
+        })
+    },
+    updateUser: function( qry ) {
 
     }
-
 }
