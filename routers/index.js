@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var crypto = require('crypto');
 require('dotenv').config();
 
 router.get('/', function(req, res) {
@@ -10,6 +9,7 @@ router.get('/', function(req, res) {
 router.get('/test', function( req, res ) {
     //res.render( 'test/test', {data: 'Testing data'} );
     var key = process.env.ACCOUNT_VERIFICATION_KEY;
+    
     res.send({
         status: 'Ok'
     })
